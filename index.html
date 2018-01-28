@@ -1,0 +1,256 @@
+<html>
+
+<head>
+	<script src="energycalculator.js" type="text/javascript"></script>
+	<style type="text/css">
+		form fieldset {
+			width: 100%;
+			border: none;
+			margin-top: 30px;
+			padding: 0;
+		}
+
+		form .field {
+			width: 100%;
+			clear: both;
+			min-height: 25px;
+		}
+
+		form .field input {
+			width: 7%;
+			margin: -4px 0 6px 1%;
+			float: left;
+			font-size: 12px;
+		}
+
+		form .field input.checkbox {
+			width: auto;
+			margin: 0 5px 0 0;
+		}
+
+		form .field #submit,
+		form .field #reset,
+		form .field #submitCompare {
+			width: auto;
+			margin: 0 10px;
+		}
+
+		form .field label {
+			width: 16%;
+			margin-left: 1%;
+			float: left;
+		}
+
+		form .field label.autoWidth {
+			width: auto;
+		}
+
+		form .field label.dollars {
+			width: 18%;
+		}
+
+		form .field label.efficiency {
+			width: 13%;
+			text-align: right;
+		}
+
+		form .field label.bold {
+			font-weight: bold;
+			width: 23%;
+		}
+
+		form .field label.cost {
+			color: #006600;
+			font-weight: bold;
+			width: auto;
+		}
+
+		form .field label.savings {
+			color: #CC0000;
+			font-weight: bold;
+			width: auto;
+		}
+
+		form .field label.highlight {
+			font-weight: bold;
+			font-style: italic;
+		}
+
+		form .field label.noMargin {
+			margin: 0;
+			width: auto;
+		}
+
+		h3 {
+			margin-bottom: 15px;
+			color: #0A3605
+		}
+
+		#fuelOilInput,
+		#propaneInput,
+		#natGasThermsInput,
+		#natGasft3Input,
+		#electricityInput {
+			display: none;
+		}
+
+		#step4,
+		#rdxResults,
+		#compareResults,
+		#rdxFuelOil,
+		#rdxPropane,
+		#rdxNgt,
+		#rdxNgf,
+		#rdxElectric {
+			display: none;
+		}
+
+		#rdxResults,
+		#rdxFuelOil,
+		#rdxPropane,
+		#rdxNgt,
+		#rdxNgf,
+		#rdxElectric {
+			margin-left: 30px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="pageContent">
+		<h2>Operating Cost Calculator</h2>
+		<p>This calculator compares your cost of operation between heating sources based upon input cost and estimated equipment efficiency.</p>
+		<p>To get started, fill out the form below, then click 'Calculate!'</p>
+		<form id='fuelForm' action='' name='fuelForm'>
+			<fieldset>
+				<h3>Step 1: Enter Electric Rate</h3>
+				<div class='field'>
+					<label for='electricRate' class='autoWidth' style='font-weight:bold;'>Your Electric Rate (Cents/kWh):</label>
+					<input type='text' id='electricRate' value='9' />
+				</div>
+				<h3>Step 2: Select Fuel Types</h3>
+				<div class='field'>
+					<input type='checkbox' class='checkbox' name='fuelType' id='fuelOil' onclick="return expand('fuelOilInput', 'rdxFuelOil')"
+					/>
+					<label for='fuelOil' class='bold'>#2 Fuel Oil</label>
+					<div id='fuelOilInput'>
+						<label for='oilCost' class='dollars'>Dollars/Gallon:</label>
+						<input type='text' id='oilCost' value='$2.50' />
+						<label for='oilEfficiency' class='efficiency'>Efficiency:</label>
+						<input type='text' id='oilEfficiency' value='70%' />
+						<label class='cost' id='oilTotal'>$0.00</label>
+						<label class='noMargin'> / MMBtu</label>
+					</div>
+				</div>
+				<div class='field'>
+					<input type='checkbox' class='checkbox' name='fuelType' id='propane' onclick="return expand('propaneInput', 'rdxPropane')"
+					/>
+					<label for='propane' class='bold'>Propane</label>
+					<div id='propaneInput'>
+						<label for='propaneCost' class='dollars'>Dollars/Gallon:</label>
+						<input type='text' id='propaneCost' value='$1.75' />
+						<label for='propaneEfficiency' class='efficiency'>Efficiency:</label>
+						<input type='text' id='propaneEfficiency' value='80%' />
+						<label class='cost' id='propaneTotal'>$0.00</label>
+						<label class='noMargin'> / MMBtu</label>
+					</div>
+				</div>
+				<div class='field'>
+					<input type='checkbox' class='checkbox' name='fuelType' id='natGasTherms' onclick="return expand('natGasThermsInput', 'rdxNgt')"
+					/>
+					<label for='natGasTherms' class='bold'>Natural Gas (thm)</label>
+					<div id='natGasThermsInput'>
+						<label for='ngtCost' class='dollars'>Cents/Therm:</label>
+						<input type='text' id='ngtCost' value='80' />
+						<label for='ngtEfficiency' class='efficiency'>Efficiency:</label>
+						<input type='text' id='ngtEfficiency' value='90%' />
+						<label class='cost' id='ngtTotal'>$0.00</label>
+						<label class='noMargin'> / MMBtu</label>
+					</div>
+				</div>
+				<div class='field'>
+					<input type='checkbox' class='checkbox' name='fuelType' id='natGasft3' onclick="return expand('natGasft3Input', 'rdxNgf')"
+					/>
+					<label for='natGasft3' class='bold'>Natural Gas (Mcf)</label>
+					<div id='natGasft3Input'>
+						<label for='ngfCost' class='dollars'>Dollars/Mcf:</label>
+						<input type='text' id='ngfCost' value='$9.00' />
+						<label for='ngfEfficiency' class='efficiency'>Efficiency:</label>
+						<input type='text' id='ngfEfficiency' value='90%' />
+						<label class='cost' id='ngfTotal'>$0.00</label>
+						<label class='noMargin'> / MMBtu</label>
+					</div>
+				</div>
+				<div class='field'>
+					<input type='checkbox' class='checkbox' name='fuelType' id='electricity' onclick="return expand('electricityInput', 'rdxElectric')"
+					/>
+					<label for='electricity' class='bold'>Electricity</label>
+					<div id='electricityInput'>
+						<label for='electricCost' class='dollars'>Cents/kWh:</label>
+						<input type='text' id='electricCost' value='9' />
+						<label for='electricEfficiency' class='efficiency'>Efficiency:</label>
+						<input type='text' id='electricEfficiency' value='100%' />
+						<label class='cost' id='electricTotal'>$0.00</label>
+						<label class='noMargin'> / MMBtu</label>
+					</div>
+				</div>
+				<h3>Step 3: Calculate Costs</h3>
+				<div class='field'>
+					<input type='button' id='submit' onclick='return calculateCosts()' value='Calculate!' />
+					<input type='reset' id='reset' onclick='clearForm()' value='Clear' />
+				</div>
+				<div id='step4'>
+					<h3>Step 4: Compare Costs</h3>
+					<p>When you're satisfied with the cost per MMBtu options, click 'Compare These Figures!' to see how the RDX system compares.</p>
+					<div class='field' style='margin-bottom:60px;'>
+						<input type='button' id='submitCompare' onclick='return compareCosts()' value='Compare These Figures!' />
+					</div>
+					<div id='rdxResults' class='field'>
+						<label class='autoWidth highlight'>Estimated RDX operational cost:</label>
+						<label class='cost highlight' id='rdxTotal'>$0.00</label>
+						<label class='noMargin highlight'> / MMBtu</label>
+					</div>
+					<div id='compareResults' class='field'>
+						<div id='rdxFuelOil' class='field'>
+							<label class='autoWidth'>Estimated savings over #2 Fuel Oil:</label>
+							<label class='savings' id='rdxOilDifference'>$0.00</label>
+							<label class='noMargin'> / MMBtu (</label>
+							<label class='savings noMargin' id='rdxOilSavings'>0%</label>
+							<label class='noMargin'>)</label>
+						</div>
+						<div id='rdxPropane' class='field'>
+							<label class='autoWidth'>Estimated savings over Propane:</label>
+							<label class='savings' id='rdxPropaneDifference'>$0.00</label>
+							<label class='noMargin'> / MMBtu (</label>
+							<label class='savings noMargin' id='rdxPropaneSavings'>0%</label>
+							<label class='noMargin'>)</label>
+						</div>
+						<div id='rdxNgt' class='field'>
+							<label class='autoWidth'>Estimated savings over Natural Gas (thm):</label>
+							<label class='savings' id='rdxNgtDifference'>$0.00</label>
+							<label class='noMargin'> / MMBtu (</label>
+							<label class='savings noMargin' id='rdxNgtSavings'>0%</label>
+							<label class='noMargin'>)</label>
+						</div>
+						<div id='rdxNgf' class='field'>
+							<label class='autoWidth'>Estimated savings over Natural Gas (Mcf):</label>
+							<label class='savings' id='rdxNgfDifference'>$0.00</label>
+							<label class='noMargin'> / MMBtu (</label>
+							<label class='savings noMargin' id='rdxNgfSavings'>0%</label>
+							<label class='noMargin'>)</label>
+						</div>
+						<div id='rdxElectric' class='field'>
+							<label class='autoWidth'>Estimated savings over Electricity:</label>
+							<label class='savings' id='rdxElectricDifference'>$0.00</label>
+							<label class='noMargin'> / MMBtu (</label>
+							<label class='savings noMargin' id='rdxElectricSavings'>0%</label>
+							<label class='noMargin'>)</label>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</body>
+
+</html>
